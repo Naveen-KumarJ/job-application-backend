@@ -10,7 +10,7 @@ app.use(express.json());
 
 mongoose
   .connect(
-    "mongodb+srv://naveenjayakumar02:<db_password>@cluster0.xlur5we.mongodb.net/"
+    "mongodb+srv://naveenjayakumar02:DUJLqiQNupt9Xjdq@cluster0.xlur5we.mongodb.net/"
   )
   .then(() => console.log("Database Connected Successfully."))
   .catch((err) => console.log("Error Connecting Database", err));
