@@ -37,18 +37,46 @@ const listJob = async (req, res) => {
   }
 };
 
-const editJob = (req, res) => {
-  res.json({
-    success: true,
-    message: "Updated Job",
-  });
+const editJob = async (req, res) => {
+  try {
+    // await jobModel.updateOne(
+    //   {
+    //     _id: req.body._id,
+    //   },
+    //   {
+    //     $set: {
+    //       ...req.body,
+    //     },
+    //   }
+    // );
+    const fields = { ...req.body };
+    delete fields._id;
+    await jobModel.findByIdAndUpdate(req.body._id, { ...fields });
+    res.json({
+      success: true,
+      message: "Updated Job",
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: "Job Update Failed " + error,
+    });
+  }
 };
 
-const deleteJob = (req, res) => {
-  res.json({
-    success: true,
-    message: "Deleted Job",
-  });
+const deleteJob = async (req, res) => {
+  try {
+    await jobModel.findByIdAndDelete(req.body._id);
+    res.json({
+      success: true,
+      message: "Deleted Job",
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: "Job Deletion Failed" + error,
+    });
+  }
 };
 
 const jobController = {
