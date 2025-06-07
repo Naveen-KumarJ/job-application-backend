@@ -39,27 +39,25 @@ const listJob = async (req, res) => {
 
 const editJob = async (req, res) => {
   try {
-    // await jobModel.updateOne(
-    //   {
-    //     _id: req.body._id,
-    //   },
-    //   {
-    //     $set: {
-    //       ...req.body,
-    //     },
-    //   }
-    // );
-    const fields = { ...req.body };
-    delete fields._id;
-    await jobModel.findByIdAndUpdate(req.body._id, { ...fields });
-    res.json({
+    const { _id, ...fields } = req.body;
+
+    if (!_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing job ID (_id)",
+      });
+    }
+
+    await jobModel.findByIdAndUpdate(_id, fields, { new: true });
+
+    res.status(200).json({
       success: true,
       message: "Updated Job",
     });
   } catch (error) {
-    res.json({
+    res.status(500).json({
       success: false,
-      message: "Job Update Failed " + error,
+      message: "Job Update Failed: " + error.message,
     });
   }
 };
